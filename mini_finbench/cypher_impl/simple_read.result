@@ -1,0 +1,135 @@
+# simple read 1
+MATCH (n:Account{id:12})
+RETURN
+    n.createTime as createTime,
+    n.isBlocked as isBlocked,
+    n.type as type;
+[{"createTime":53,"isBlocked":false,"type":"tp3"}]
+
+
+# simple read 2
+MATCH (n:Account{id:12}) WITH n
+OPTIONAL MATCH (n)-[e]->(m:Account)
+WHERE
+    e.timestamp > 45
+    AND e.timestamp < 50
+WITH
+    sum(e.amount) as sumEdge1Amount,
+    max(e.amount) as maxEdge1Amount,
+    count(e) as numEdge1
+MATCH (n:Account{id:13}) WITH n, sumEdge1Amount, maxEdge1Amount, numEdge1
+OPTIONAL MATCH (n)<-[e]-(m:Account)
+WHERE
+    e.timestamp > 0
+    AND e.timestamp < 100
+WITH
+    sumEdge1Amount,
+    maxEdge1Amount,
+    numEdge1,
+    sum(e.amount) as sumEdge2Amount,
+    max(e.amount) as maxEdge2Amount,
+    count(e) as numEdge2
+RETURN
+    sumEdge1Amount,
+    CASE WHEN maxEdge1Amount < 0 THEN -1 ELSE maxEdge1Amount END as maxEdge1Amount,
+    numEdge1,
+    sumEdge2Amount,
+    CASE WHEN maxEdge2Amount < 0 THEN -1 ELSE maxEdge2Amount END as maxEdge2Amount,
+    numEdge2;
+[{"maxEdge1Amount":-1,"maxEdge2Amount":97.0,"numEdge1":0,"numEdge2":15,"sumEdge1Amount":0.0,"sumEdge2Amount":836.0}]
+
+
+# simple read 3
+MATCH (n:Account{id:12}) WITH n
+OPTIONAL MATCH (n)<-[e:transfer]-(m:Account)
+WHERE
+    e.amount > 30
+    AND e.timestamp > 10
+    AND e.timestamp < 70
+    AND m.isBlocked=true
+WITH count(m) * 1.0 as numM
+MATCH (n:Account{id:12}) WITH n, numM
+OPTIONAL MATCH (n)<-[e:transfer]-(m:Account)
+RETURN numM / count(m) as blockRatio;
+[{"blockRatio":0.42857142857142855}]
+
+
+# simple read 4
+MATCH (n:Account{id:12}) WITH n
+OPTIONAL MATCH (n)-[e:transfer]->(m:Account)
+WHERE
+    e.amount > 20
+    AND e.timestamp > 30
+    AND e.timestamp <= 100
+RETURN
+    m.id as dstId,
+    count(e) as numEdges,
+    sum(e.amount) as sumAmount
+ORDER BY dstId;
+[{"dstId":2,"numEdges":1,"sumAmount":91.0},{"dstId":6,"numEdges":1,"sumAmount":45.0}]
+
+
+# simple read 5
+MATCH (n:Account{id:12})<-[e:transfer]-(m:Account)
+WHERE
+    e.amount > 0
+    AND e.timestamp > 0
+    AND e.timestamp < 100
+RETURN
+    m.id as srcId,
+    count(e) as numEdges,
+    sum(e.amount) as sumAmount
+ORDER BY srcId;
+[{"numEdges":1,"srcId":3,"sumAmount":50.0},{"numEdges":1,"srcId":8,"sumAmount":40.0},{"numEdges":2,"srcId":9,"sumAmount":95.0},{"numEdges":1,"srcId":13,"sumAmount":53.0},{"numEdges":1,"srcId":17,"sumAmount":90.0},{"numEdges":1,"srcId":18,"sumAmount":64.0}]
+
+
+# simple read 6
+MATCH
+    (src:Account{id:12})<-[e1:transfer]-(m:Account)
+    -[e2:transfer]->(dst:Account)
+WHERE
+    dst.isBlocked = true
+    AND src.id <> dst.id
+    AND e1.timestamp > 20
+    AND e1.timestamp < 40
+    AND e2.timestamp > 30
+    AND e2.timestamp < 70
+RETURN
+    DISTINCT dst.id as dstId
+ORDER BY dstId ASC;
+[{"dstId":4},{"dstId":5}]
+
+
+# simple read 7
+MATCH
+    (n:Person{id:12})-[e:invest]->(comp:Company)
+WITH comp.id as id
+ORDER BY id
+RETURN
+    collect(distinct id) as compIds;
+[{"compIds":[5,7,9,10,12,14,15]}]
+
+
+# simple read 8
+MATCH (n:Company{id:12}) WITH n
+OPTIONAL MATCH (n)-[:own]->(acc:Account)
+WITH acc.id AS accId, n ORDER BY accId
+WITH collect(distinct accId) AS accIds, n
+OPTIONAL MATCH (n)-[:apply]->(loan:Loan)
+WITH loan.id AS loanId, accIds, n ORDER BY loanId
+WITH collect(distinct loanId) AS loanIds, accIds, n
+OPTIONAL MATCH (n)<-[:invest]-(com:Company)
+WITH com.id AS comId, loanIds, accIds, n ORDER BY comId
+WITH collect(distinct comId) AS comIds, loanIds, accIds, n
+OPTIONAL MATCH (n)<-[:invest]-(p1:Person)
+WITH p1.id AS p1Id, comIds, loanIds, accIds, n ORDER BY p1Id
+WITH collect(distinct p1Id) AS p1Ids, comIds, loanIds, accIds, n
+OPTIONAL MATCH (n)<-[:workIn]-(p2:Person)
+WITH p2.id AS p2Id, p1Ids, comIds, loanIds, accIds, n ORDER BY p2Id
+RETURN
+    collect(p2Id) AS p2Id,
+    p1Ids AS p1Id,
+    comIds AS comId,
+    loanIds AS loanId,
+    accIds AS accId;
+[{"accId":[3,4,8,11,13,15,18],"comId":[4],"loanId":[1,15,16,19],"p1Id":[12,13,16],"p2Id":[2,11,14]}]

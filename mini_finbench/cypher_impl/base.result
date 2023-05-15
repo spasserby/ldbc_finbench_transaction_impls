@@ -1,0 +1,35 @@
+MATCH (n:Person)
+RETURN n.id LIMIT 1;
+[{"n.id":0}]
+
+MATCH (n:Person) RETURN n.id LIMIT 1;
+[{"n.id":0}]
+
+# truncationOrder
+# loadProcedure truncationOrder ../../test/resource/cases/finbench/cypher/procedure/truncationOrder.cpp read_only=true
+
+MATCH (n:Account{id:7})-[e:transfer]->(m:Account{id:8})
+RETURN e.timestamp LIMIT 5;
+[{"e.timestamp":29},{"e.timestamp":7}]
+
+CALL plugin.cpp.truncationOrder({
+    src: 7,
+    dst: 8
+});
+[{"plugin.cpp.truncationOrder":[29,7]}]
+
+MATCH (n:Account{id:7}), (m:Account{id:8})
+CREATE (n)-[e:transfer{timestamp:12, amount:0, type:'tp1'}]->(m);
+[{"<SUMMARY>":"created 0 vertices, created 1 edges."}]
+
+MATCH (n:Account{id:7})-[e:transfer]->(m:Account{id:8})
+RETURN e.timestamp LIMIT 5;
+[{"e.timestamp":29},{"e.timestamp":12},{"e.timestamp":7}]
+
+CALL plugin.cpp.truncationOrder({
+    src: 7,
+    dst: 8
+});
+[{"plugin.cpp.truncationOrder":[29,12,7]}]
+
+# truncationOrder end
