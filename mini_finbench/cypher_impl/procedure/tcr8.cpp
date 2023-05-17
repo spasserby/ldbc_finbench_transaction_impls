@@ -17,12 +17,11 @@
 #include <iostream>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include "lgraph/lgraph.h"
 #include "lgraph/lgraph_types.h"
 #include "lgraph/lgraph_utils.h"
 #include "tools/json.hpp"
-#include <boost/stacktrace.hpp>
-#include <utility>
 
 using namespace lgraph_api;
 using json = nlohmann::json;
@@ -82,9 +81,6 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     std::unordered_map<int64_t, int64_t> min_amount;
     std::unordered_set<int64_t> src{loan.GetId()}, dst;
     for (size_t i = 0; i < 4; i++) {
-        // for (auto& vid : src) {
-        //     std::cout << vid << std::endl;
-        // }
         for (auto& vid : src) {
             vit.Goto(vid);
             auto eit = vit.GetOutEdgeIterator();
@@ -124,17 +120,11 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
         std::swap(src, dst);
         dst.clear();
     }
-    // auto svit = txn.GetVertexIterator();
-    // auto dvit = txn.GetVertexIterator();
     std::vector<std::pair<std::pair<int64_t, size_t>, int64_t>> result;
     for (auto& kv1 : merged_in) {
         int64_t sum = 0;
         size_t hop = 0;
         for (auto& kv2 : kv1.second) {
-            // svit.Goto(kv1.first);
-            // dvit.Goto(kv2.first);
-            // std::cout << svit.GetField("id").AsInt64() << " " << dvit.GetField("id").AsInt64()
-            //           << " " << kv2.second.first << std::endl;
             sum += kv2.second.first;
             hop = kv2.second.second;
         }

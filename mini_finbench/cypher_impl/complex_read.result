@@ -9,12 +9,12 @@ WHERE
     AND e2.timestamp > 10
     AND e2.timestamp < 50
     AND medium.isBlocked = true
-RETURN
+RETURN DISTINCT
     other.id as otherId,
     length(p)-1 as accountDistance,
     medium.id as mediumId,
     medium.type as mediumType
-ORDER BY accountDistance, otherId;
+ORDER BY accountDistance, otherId, mediumId;
 [{"accountDistance":1,"mediumId":1,"mediumType":"Medium1","otherId":2},{"accountDistance":1,"mediumId":5,"mediumType":"Medium5","otherId":9},{"accountDistance":2,"mediumId":16,"mediumType":"Medium16","otherId":12}]
 
 
@@ -53,7 +53,7 @@ CALL algo.shortestPath(
         }
     }
 )
-YIELD nodeCount, totalCost, path
+YIELD nodeCount
 RETURN nodeCount - 1 AS len;
 [{"len":7}]
 
@@ -104,7 +104,7 @@ WHERE
     isAsc(relationships(e2, 'timestamp'))=true
     AND head(relationships(e2, 'timestamp')) > 30
     AND last(relationships(e2, 'timestamp')) < 50
-RETURN
+RETURN DISTINCT
     nodes(p, "id") as path,
     length(p) as len
 ORDER BY len;
@@ -127,12 +127,18 @@ WHERE
     edge1.timestamp > 10
     AND edge1.timestamp < 90
     AND edge1.amount > 11
+WITH
+    mid.id AS midId,
+    count(edge1) AS edge1Count,
+    sum(edge1.amount) AS sumEdge1Amount,
+    sumEdge2Amount
+WHERE edge1Count > 3
 RETURN
-    mid.id,
-    sum(edge1.amount) as sumEdge1Amount,
+    midId,
+    sumEdge1Amount,
     sumEdge2Amount
 ORDER BY sumEdge2Amount DESC;
-[{"mid.id":3,"sumEdge1Amount":169.0,"sumEdge2Amount":83.0},{"mid.id":8,"sumEdge1Amount":324.0,"sumEdge2Amount":55.0}]
+[{"midId":8,"sumEdge1Amount":324.0,"sumEdge2Amount":55.0}]
 
 
 # complex read 7
@@ -164,7 +170,7 @@ RETURN
 [{"inOutRatio":3.0516129032258066,"numDst":2,"numSrc":6}]
 
 
-# tcr8
+# complex read 8
 
 # loadProcedure tcr8 ../../test/resource/cases/finbench/cypher/procedure/tcr8.cpp read_only=true
 

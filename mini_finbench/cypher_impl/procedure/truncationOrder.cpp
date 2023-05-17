@@ -17,12 +17,11 @@
 #include <iostream>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include "lgraph/lgraph.h"
 #include "lgraph/lgraph_types.h"
 #include "lgraph/lgraph_utils.h"
 #include "tools/json.hpp"
-#include <boost/stacktrace.hpp>
-#include <utility>
 
 using namespace lgraph_api;
 using json = nlohmann::json;
@@ -51,8 +50,7 @@ extern "C" bool Process(GraphDB& db, const std::string& request, std::string& re
     vit.Goto(account_src);
     auto eit = vit.GetOutEdgeIterator(EdgeUid(0, 0, 0, 0, 0), true);
     std::vector<int64_t> ts_list;
-    while (eit.IsValid() && eit.GetSrc() == account_src &&
-           eit.GetLabelId() == 0) {
+    while (eit.IsValid() && eit.GetSrc() == account_src && eit.GetLabelId() == 0) {
         if (account_dst == eit.GetDst()) {
             ts_list.push_back(eit.GetField(TIMESTAMP).AsInt64());
         }
