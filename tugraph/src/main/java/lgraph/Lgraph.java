@@ -71683,6 +71683,15 @@ public final class Lgraph {
      * <code>optional double timeout = 7;</code>
      */
     double getTimeout();
+
+    /**
+     * <code>optional int64 per_node_limit = 8;</code>
+     */
+    boolean hasPerNodeLimit();
+    /**
+     * <code>optional int64 per_node_limit = 8;</code>
+     */
+    long getPerNodeLimit();
   }
   /**
    * Protobuf type {@code lgraph.GraphQueryRequest}
@@ -71703,6 +71712,7 @@ public final class Lgraph {
       resultInJsonFormat_ = false;
       graph_ = "";
       timeout_ = 0D;
+      perNodeLimit_ = 0L;
     }
 
     @java.lang.Override
@@ -71783,6 +71793,11 @@ public final class Lgraph {
             case 57: {
               bitField0_ |= 0x00000020;
               timeout_ = input.readDouble();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000040;
+              perNodeLimit_ = input.readInt64();
               break;
             }
             default: {
@@ -72002,6 +72017,21 @@ public final class Lgraph {
       return timeout_;
     }
 
+    public static final int PER_NODE_LIMIT_FIELD_NUMBER = 8;
+    private long perNodeLimit_;
+    /**
+     * <code>optional int64 per_node_limit = 8;</code>
+     */
+    public boolean hasPerNodeLimit() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional int64 per_node_limit = 8;</code>
+     */
+    public long getPerNodeLimit() {
+      return perNodeLimit_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -72049,6 +72079,9 @@ public final class Lgraph {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeDouble(7, timeout_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeInt64(8, perNodeLimit_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -72087,6 +72120,10 @@ public final class Lgraph {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeDoubleSize(7, timeout_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(8, perNodeLimit_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -72137,6 +72174,11 @@ public final class Lgraph {
             == java.lang.Double.doubleToLongBits(
                 other.getTimeout()));
       }
+      result = result && (hasPerNodeLimit() == other.hasPerNodeLimit());
+      if (hasPerNodeLimit()) {
+        result = result && (getPerNodeLimit()
+            == other.getPerNodeLimit());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -72177,6 +72219,11 @@ public final class Lgraph {
         hash = (37 * hash) + TIMEOUT_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             java.lang.Double.doubleToLongBits(getTimeout()));
+      }
+      if (hasPerNodeLimit()) {
+        hash = (37 * hash) + PER_NODE_LIMIT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getPerNodeLimit());
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -72330,6 +72377,8 @@ public final class Lgraph {
         bitField0_ = (bitField0_ & ~0x00000020);
         timeout_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000040);
+        perNodeLimit_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -72391,6 +72440,10 @@ public final class Lgraph {
           to_bitField0_ |= 0x00000020;
         }
         result.timeout_ = timeout_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.perNodeLimit_ = perNodeLimit_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -72471,6 +72524,9 @@ public final class Lgraph {
         }
         if (other.hasTimeout()) {
           setTimeout(other.getTimeout());
+        }
+        if (other.hasPerNodeLimit()) {
+          setPerNodeLimit(other.getPerNodeLimit());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -72971,6 +73027,38 @@ public final class Lgraph {
       public Builder clearTimeout() {
         bitField0_ = (bitField0_ & ~0x00000040);
         timeout_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private long perNodeLimit_ ;
+      /**
+       * <code>optional int64 per_node_limit = 8;</code>
+       */
+      public boolean hasPerNodeLimit() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional int64 per_node_limit = 8;</code>
+       */
+      public long getPerNodeLimit() {
+        return perNodeLimit_;
+      }
+      /**
+       * <code>optional int64 per_node_limit = 8;</code>
+       */
+      public Builder setPerNodeLimit(long value) {
+        bitField0_ |= 0x00000080;
+        perNodeLimit_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 per_node_limit = 8;</code>
+       */
+      public Builder clearPerNodeLimit() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        perNodeLimit_ = 0L;
         onChanged();
         return this;
       }
@@ -107451,136 +107539,137 @@ public final class Lgraph {
       "ponse\030\n \001(\0132\030.lgraph.ListUserResponseH\000\022" +
       "6\n\022list_role_response\030\013 \001(\0132\030.lgraph.Lis" +
       "tRoleResponseH\000B\006\n\004Resp\"$\n\006Header\022\014\n\004nam" +
-      "e\030\001 \002(\t\022\014\n\004type\030\002 \002(\005\"\325\001\n\021GraphQueryRequ" +
+      "e\030\001 \002(\t\022\014\n\004type\030\002 \002(\005\"\355\001\n\021GraphQueryRequ" +
       "est\022)\n\004type\030\001 \002(\0162\033.lgraph.ProtoGraphQue" +
       "ryType\022\r\n\005query\030\002 \002(\t\022\023\n\013param_names\030\003 \003" +
       "(\t\0222\n\014param_values\030\004 \001(\0132\034.lgraph.ListOf" +
       "ProtoFieldData\022\035\n\025result_in_json_format\030" +
-      "\005 \002(\010\022\r\n\005graph\030\006 \001(\t\022\017\n\007timeout\030\007 \001(\001\"q\n" +
-      "\020GraphQueryResult\022\036\n\006header\030\001 \003(\0132\016.lgra" +
-      "ph.Header\022,\n\006result\030\002 \003(\0132\034.lgraph.ListO" +
-      "fProtoFieldData\022\017\n\007elapsed\030\003 \002(\001\"h\n\022Grap" +
-      "hQueryResponse\022\025\n\013json_result\030\001 \001(\tH\000\0221\n" +
-      "\rbinary_result\030\002 \001(\0132\030.lgraph.GraphQuery" +
-      "ResultH\000B\010\n\006Result\"o\n\rImportRequest\022\r\n\005g" +
-      "raph\030\003 \002(\t\022\023\n\013description\030\004 \002(\t\022\014\n\004data\030" +
-      "\005 \002(\t\022\031\n\021continue_on_error\030\006 \002(\010\022\021\n\tdeli" +
-      "miter\030\007 \002(\t\"4\n\016ImportResponse\022\013\n\003log\030\001 \001" +
-      "(\t\022\025\n\rerror_message\030\002 \001(\t\"3\n\rSchemaReque" +
-      "st\022\r\n\005graph\030\003 \002(\t\022\023\n\013description\030\004 \002(\t\"4" +
-      "\n\016SchemaResponse\022\013\n\003log\030\001 \001(\t\022\025\n\rerror_m" +
-      "essage\030\002 \001(\t\"t\n\021CallPluginRequest\022\014\n\004nam" +
-      "e\030\001 \002(\t\022\r\n\005param\030\002 \002(\014\022\017\n\007timeout\030\003 \001(\001\022" +
-      "\022\n\nin_process\030\004 \001(\010\022\035\n\025result_in_json_fo" +
-      "rmat\030\005 \001(\010\"P\n\022CallPluginResponse\022\017\n\005repl" +
-      "y\030\001 \001(\014H\000\022\025\n\013json_result\030\002 \001(\tH\000B\022\n\020Call" +
-      "PluginResult\"\265\001\n\021LoadPluginRequest\022\014\n\004na" +
-      "me\030\001 \002(\t\022\021\n\tread_only\030\002 \002(\010\022\014\n\004code\030\003 \002(" +
-      "\014\022\014\n\004desc\030\004 \001(\t\0225\n\tcode_type\030\005 \001(\0162\".lgr" +
-      "aph.LoadPluginRequest.CodeType\",\n\010CodeTy" +
-      "pe\022\006\n\002PY\020\001\022\006\n\002SO\020\002\022\007\n\003CPP\020\003\022\007\n\003ZIP\020\004\"\024\n\022" +
-      "LoadPluginResponse\" \n\020DelPluginRequest\022\014" +
-      "\n\004name\030\001 \002(\t\"\023\n\021DelPluginResponse\"\023\n\021Lis" +
-      "tPluginRequest\"#\n\022ListPluginResponse\022\r\n\005" +
-      "reply\030\001 \002(\t\"\202\003\n\rPluginRequest\022.\n\004type\030\001 " +
-      "\002(\0162 .lgraph.PluginRequest.PluginType\0228\n" +
-      "\023load_plugin_request\030\002 \001(\0132\031.lgraph.Load" +
-      "PluginRequestH\000\0226\n\022del_plugin_request\030\003 " +
-      "\001(\0132\030.lgraph.DelPluginRequestH\000\0228\n\023call_" +
-      "plugin_request\030\004 \001(\0132\031.lgraph.CallPlugin" +
-      "RequestH\000\0228\n\023list_plugin_request\030\005 \001(\0132\031" +
-      ".lgraph.ListPluginRequestH\000\022\r\n\005graph\030\006 \002" +
-      "(\t\022\017\n\007version\030\007 \001(\t\"4\n\nPluginType\022\007\n\003CPP" +
-      "\020\001\022\n\n\006PYTHON\020\002\022\010\n\004JAVA\020\003\022\007\n\003ANY\020\004B\005\n\003Req" +
-      "\"\206\002\n\016PluginResponse\022:\n\024load_plugin_respo" +
-      "nse\030\001 \001(\0132\032.lgraph.LoadPluginResponseH\000\022" +
-      "8\n\023del_plugin_response\030\002 \001(\0132\031.lgraph.De" +
-      "lPluginResponseH\000\022:\n\024call_plugin_respons" +
-      "e\030\003 \001(\0132\032.lgraph.CallPluginResponseH\000\022:\n" +
-      "\024list_plugin_response\030\004 \001(\0132\032.lgraph.Lis" +
-      "tPluginResponseH\000B\006\n\004Resp\"Y\n\020HeartbeatRe" +
-      "quest\022\020\n\010rpc_addr\030\001 \002(\t\022\021\n\trest_addr\030\002 \002" +
-      "(\t\022 \n\005state\030\003 \002(\0162\021.lgraph.NodeState\"\023\n\021" +
-      "HeartbeatResponse\"Q\n\010PeerInfo\022\020\n\010rpc_add" +
+      "\005 \002(\010\022\r\n\005graph\030\006 \001(\t\022\017\n\007timeout\030\007 \001(\001\022\026\n" +
+      "\016per_node_limit\030\010 \001(\003\"q\n\020GraphQueryResul" +
+      "t\022\036\n\006header\030\001 \003(\0132\016.lgraph.Header\022,\n\006res" +
+      "ult\030\002 \003(\0132\034.lgraph.ListOfProtoFieldData\022" +
+      "\017\n\007elapsed\030\003 \002(\001\"h\n\022GraphQueryResponse\022\025" +
+      "\n\013json_result\030\001 \001(\tH\000\0221\n\rbinary_result\030\002" +
+      " \001(\0132\030.lgraph.GraphQueryResultH\000B\010\n\006Resu" +
+      "lt\"o\n\rImportRequest\022\r\n\005graph\030\003 \002(\t\022\023\n\013de" +
+      "scription\030\004 \002(\t\022\014\n\004data\030\005 \002(\t\022\031\n\021continu" +
+      "e_on_error\030\006 \002(\010\022\021\n\tdelimiter\030\007 \002(\t\"4\n\016I" +
+      "mportResponse\022\013\n\003log\030\001 \001(\t\022\025\n\rerror_mess" +
+      "age\030\002 \001(\t\"3\n\rSchemaRequest\022\r\n\005graph\030\003 \002(" +
+      "\t\022\023\n\013description\030\004 \002(\t\"4\n\016SchemaResponse" +
+      "\022\013\n\003log\030\001 \001(\t\022\025\n\rerror_message\030\002 \001(\t\"t\n\021" +
+      "CallPluginRequest\022\014\n\004name\030\001 \002(\t\022\r\n\005param" +
+      "\030\002 \002(\014\022\017\n\007timeout\030\003 \001(\001\022\022\n\nin_process\030\004 " +
+      "\001(\010\022\035\n\025result_in_json_format\030\005 \001(\010\"P\n\022Ca" +
+      "llPluginResponse\022\017\n\005reply\030\001 \001(\014H\000\022\025\n\013jso" +
+      "n_result\030\002 \001(\tH\000B\022\n\020CallPluginResult\"\265\001\n" +
+      "\021LoadPluginRequest\022\014\n\004name\030\001 \002(\t\022\021\n\tread" +
+      "_only\030\002 \002(\010\022\014\n\004code\030\003 \002(\014\022\014\n\004desc\030\004 \001(\t\022" +
+      "5\n\tcode_type\030\005 \001(\0162\".lgraph.LoadPluginRe" +
+      "quest.CodeType\",\n\010CodeType\022\006\n\002PY\020\001\022\006\n\002SO" +
+      "\020\002\022\007\n\003CPP\020\003\022\007\n\003ZIP\020\004\"\024\n\022LoadPluginRespon" +
+      "se\" \n\020DelPluginRequest\022\014\n\004name\030\001 \002(\t\"\023\n\021" +
+      "DelPluginResponse\"\023\n\021ListPluginRequest\"#" +
+      "\n\022ListPluginResponse\022\r\n\005reply\030\001 \002(\t\"\202\003\n\r" +
+      "PluginRequest\022.\n\004type\030\001 \002(\0162 .lgraph.Plu" +
+      "ginRequest.PluginType\0228\n\023load_plugin_req" +
+      "uest\030\002 \001(\0132\031.lgraph.LoadPluginRequestH\000\022" +
+      "6\n\022del_plugin_request\030\003 \001(\0132\030.lgraph.Del" +
+      "PluginRequestH\000\0228\n\023call_plugin_request\030\004" +
+      " \001(\0132\031.lgraph.CallPluginRequestH\000\0228\n\023lis" +
+      "t_plugin_request\030\005 \001(\0132\031.lgraph.ListPlug" +
+      "inRequestH\000\022\r\n\005graph\030\006 \002(\t\022\017\n\007version\030\007 " +
+      "\001(\t\"4\n\nPluginType\022\007\n\003CPP\020\001\022\n\n\006PYTHON\020\002\022\010" +
+      "\n\004JAVA\020\003\022\007\n\003ANY\020\004B\005\n\003Req\"\206\002\n\016PluginRespo" +
+      "nse\022:\n\024load_plugin_response\030\001 \001(\0132\032.lgra" +
+      "ph.LoadPluginResponseH\000\0228\n\023del_plugin_re" +
+      "sponse\030\002 \001(\0132\031.lgraph.DelPluginResponseH" +
+      "\000\022:\n\024call_plugin_response\030\003 \001(\0132\032.lgraph" +
+      ".CallPluginResponseH\000\022:\n\024list_plugin_res" +
+      "ponse\030\004 \001(\0132\032.lgraph.ListPluginResponseH" +
+      "\000B\006\n\004Resp\"Y\n\020HeartbeatRequest\022\020\n\010rpc_add" +
       "r\030\001 \002(\t\022\021\n\trest_addr\030\002 \002(\t\022 \n\005state\030\003 \002(" +
-      "\0162\021.lgraph.NodeState\"\022\n\020ListPeersRequest" +
-      "\"4\n\021ListPeersResponse\022\037\n\005peers\030\001 \003(\0132\020.l" +
-      "graph.PeerInfo\"\022\n\020GetMasterRequest\"5\n\021Ge" +
-      "tMasterResponse\022 \n\006master\030\001 \002(\0132\020.lgraph" +
-      ".PeerInfo\"\"\n\017SyncMetaRequest\022\017\n\007confirm\030" +
-      "\001 \002(\t\"\037\n\020SyncMetaResponse\022\013\n\003ret\030\001 \002(\005\"\357" +
-      "\001\n\tHARequest\0225\n\021heartbeat_request\030\001 \001(\0132" +
-      "\030.lgraph.HeartbeatRequestH\000\0226\n\022list_peer" +
-      "s_request\030\002 \001(\0132\030.lgraph.ListPeersReques" +
-      "tH\000\0226\n\022get_master_request\030\003 \001(\0132\030.lgraph" +
-      ".GetMasterRequestH\000\0224\n\021sync_meta_request" +
-      "\030\004 \001(\0132\027.lgraph.SyncMetaRequestH\000B\005\n\003Req" +
-      "\"\371\001\n\nHAResponse\0227\n\022heartbeat_response\030\001 " +
-      "\001(\0132\031.lgraph.HeartbeatResponseH\000\0228\n\023list" +
-      "_peers_response\030\002 \001(\0132\031.lgraph.ListPeers" +
-      "ResponseH\000\0228\n\023get_master_response\030\003 \001(\0132" +
-      "\031.lgraph.GetMasterResponseH\000\0226\n\022sync_met" +
-      "a_response\030\004 \001(\0132\030.lgraph.SyncMetaRespon" +
-      "seH\000B\006\n\004Resp\"\312\004\n\rLGraphRequest\022\026\n\016client" +
-      "_version\030\001 \001(\003\022\r\n\005token\030\002 \002(\t\022\023\n\013is_writ" +
-      "e_op\030\003 \001(\010\022\014\n\004user\030\004 \001(\t\0224\n\021graph_api_re" +
-      "quest\030\013 \001(\0132\027.lgraph.GraphApiRequestH\000\0228" +
-      "\n\023graph_query_request\030\014 \001(\0132\031.lgraph.Gra" +
-      "phQueryRequestH\000\022/\n\016plugin_request\030\r \001(\013" +
-      "2\025.lgraph.PluginRequestH\000\022\'\n\nha_request\030" +
-      "\016 \001(\0132\021.lgraph.HARequestH\000\022/\n\016import_req" +
-      "uest\030\017 \001(\0132\025.lgraph.ImportRequestH\000\022-\n\rg" +
-      "raph_request\030\021 \001(\0132\024.lgraph.GraphRequest" +
-      "H\000\022)\n\013acl_request\030\022 \001(\0132\022.lgraph.AclRequ" +
-      "estH\000\022/\n\016config_request\030\023 \001(\0132\025.lgraph.C" +
-      "onfigRequestH\000\0221\n\017restore_request\030\024 \001(\0132" +
-      "\026.lgraph.RestoreRequestH\000\022/\n\016schema_requ" +
-      "est\030\025 \001(\0132\025.lgraph.SchemaRequestH\000B\005\n\003Re" +
-      "q\"\366\005\n\016LGraphResponse\0224\n\nerror_code\030\001 \002(\016" +
-      "2 .lgraph.LGraphResponse.ErrorCode\022\020\n\010re" +
-      "direct\030\002 \001(\t\022\r\n\005error\030\003 \001(\t\022\026\n\016server_ve" +
-      "rsion\030\004 \001(\003\0226\n\022graph_api_response\030\013 \001(\0132" +
-      "\030.lgraph.GraphApiResponseH\000\022:\n\024graph_que" +
-      "ry_response\030\014 \001(\0132\032.lgraph.GraphQueryRes" +
-      "ponseH\000\0221\n\017plugin_response\030\r \001(\0132\026.lgrap" +
-      "h.PluginResponseH\000\022)\n\013ha_response\030\016 \001(\0132" +
-      "\022.lgraph.HAResponseH\000\0221\n\017import_response" +
-      "\030\017 \001(\0132\026.lgraph.ImportResponseH\000\022/\n\016grap" +
-      "h_response\030\021 \001(\0132\025.lgraph.GraphResponseH" +
-      "\000\022+\n\014acl_response\030\022 \001(\0132\023.lgraph.AclResp" +
-      "onseH\000\0221\n\017config_response\030\023 \001(\0132\026.lgraph" +
-      ".ConfigResponseH\000\0223\n\020restore_response\030\024 " +
-      "\001(\0132\027.lgraph.RestoreResponseH\000\0221\n\017schema" +
-      "_response\030\025 \001(\0132\026.lgraph.SchemaResponseH" +
-      "\000\"o\n\tErrorCode\022\013\n\007SUCCESS\020\001\022\017\n\013BAD_REQUE" +
-      "ST\020\002\022\016\n\nAUTH_ERROR\020\003\022\n\n\006KILLED\020\004\022\014\n\010REDI" +
-      "RECT\020\005\022\n\n\006FAILED\020\006\022\016\n\tEXCEPTION\020\377\001B\006\n\004Re" +
-      "sp\"Q\n\016BackupLogEntry\022\r\n\005index\030\001 \002(\003\022\014\n\004t" +
-      "ime\030\002 \002(\003\022\"\n\003req\030\003 \002(\0132\025.lgraph.LGraphRe" +
-      "quest\"6\n\016RestoreRequest\022$\n\004logs\030\001 \003(\0132\026." +
-      "lgraph.BackupLogEntry\"+\n\017RestoreResponse" +
-      "\022\030\n\020last_success_idx\030\001 \002(\003\"\261\001\n\nLogMessag" +
-      "e\022\r\n\005index\030\001 \002(\003\022\014\n\004time\030\002 \002(\003\022\021\n\tbegin_" +
-      "end\030\003 \002(\010\022\014\n\004user\030\004 \001(\t\022\r\n\005graph\030\005 \001(\t\022 " +
-      "\n\004type\030\006 \001(\0162\022.lgraph.LogApiType\022\022\n\nread" +
-      "_write\030\007 \001(\010\022\017\n\007success\030\010 \001(\010\022\017\n\007content" +
-      "\030\t \001(\t\"\r\n\013HttpRequest\"\016\n\014HttpResponse*\223\001" +
-      "\n\016ProtoFieldType\022\007\n\003NUL\020\000\022\010\n\004BOOL\020\001\022\010\n\004I" +
-      "NT8\020\002\022\t\n\005INT16\020\003\022\t\n\005INT32\020\004\022\t\n\005INT64\020\005\022\t" +
-      "\n\005FLOAT\020\006\022\n\n\006DOUBLE\020\007\022\010\n\004DATE\020\010\022\014\n\010DATET" +
-      "IME\020\t\022\n\n\006STRING\020\n\022\010\n\004BLOB\020\013*E\n\020ProtoAcce" +
-      "ssLevel\022\010\n\004NONE\020\000\022\r\n\tREAD_ONLY\020\001\022\016\n\nREAD" +
-      "_WRITE\020\002\022\010\n\004FULL\020\003**\n\023ProtoGraphQueryTyp" +
-      "e\022\n\n\006CYPHER\020\000\022\007\n\003GQL\020\001*z\n\tNodeState\022\021\n\rU" +
-      "NINITIALIZED\020\001\022\024\n\020LOADING_SNAPSHOT\020\002\022\021\n\r" +
-      "REPLAYING_LOG\020\003\022\021\n\rJOINED_FOLLOW\020\004\022\021\n\rJO" +
-      "INED_MASTER\020\005\022\013\n\007OFFLINE\020\006*J\n\nLogApiType" +
-      "\022\r\n\tSingleApi\020\000\022\014\n\010Security\020\001\022\n\n\006Plugin\020" +
-      "\002\022\n\n\006Cypher\020\003\022\007\n\003Gql\020\0042R\n\020LGraphRPCServi" +
-      "ce\022>\n\rHandleRequest\022\025.lgraph.LGraphReque" +
-      "st\032\026.lgraph.LGraphResponse2G\n\021LGraphHttp" +
-      "Service\0222\n\005Query\022\023.lgraph.HttpRequest\032\024." +
-      "lgraph.HttpResponseB\003\200\001\001"
+      "\0162\021.lgraph.NodeState\"\023\n\021HeartbeatRespons" +
+      "e\"Q\n\010PeerInfo\022\020\n\010rpc_addr\030\001 \002(\t\022\021\n\trest_" +
+      "addr\030\002 \002(\t\022 \n\005state\030\003 \002(\0162\021.lgraph.NodeS" +
+      "tate\"\022\n\020ListPeersRequest\"4\n\021ListPeersRes" +
+      "ponse\022\037\n\005peers\030\001 \003(\0132\020.lgraph.PeerInfo\"\022" +
+      "\n\020GetMasterRequest\"5\n\021GetMasterResponse\022" +
+      " \n\006master\030\001 \002(\0132\020.lgraph.PeerInfo\"\"\n\017Syn" +
+      "cMetaRequest\022\017\n\007confirm\030\001 \002(\t\"\037\n\020SyncMet" +
+      "aResponse\022\013\n\003ret\030\001 \002(\005\"\357\001\n\tHARequest\0225\n\021" +
+      "heartbeat_request\030\001 \001(\0132\030.lgraph.Heartbe" +
+      "atRequestH\000\0226\n\022list_peers_request\030\002 \001(\0132" +
+      "\030.lgraph.ListPeersRequestH\000\0226\n\022get_maste" +
+      "r_request\030\003 \001(\0132\030.lgraph.GetMasterReques" +
+      "tH\000\0224\n\021sync_meta_request\030\004 \001(\0132\027.lgraph." +
+      "SyncMetaRequestH\000B\005\n\003Req\"\371\001\n\nHAResponse\022" +
+      "7\n\022heartbeat_response\030\001 \001(\0132\031.lgraph.Hea" +
+      "rtbeatResponseH\000\0228\n\023list_peers_response\030" +
+      "\002 \001(\0132\031.lgraph.ListPeersResponseH\000\0228\n\023ge" +
+      "t_master_response\030\003 \001(\0132\031.lgraph.GetMast" +
+      "erResponseH\000\0226\n\022sync_meta_response\030\004 \001(\013" +
+      "2\030.lgraph.SyncMetaResponseH\000B\006\n\004Resp\"\312\004\n" +
+      "\rLGraphRequest\022\026\n\016client_version\030\001 \001(\003\022\r" +
+      "\n\005token\030\002 \002(\t\022\023\n\013is_write_op\030\003 \001(\010\022\014\n\004us" +
+      "er\030\004 \001(\t\0224\n\021graph_api_request\030\013 \001(\0132\027.lg" +
+      "raph.GraphApiRequestH\000\0228\n\023graph_query_re" +
+      "quest\030\014 \001(\0132\031.lgraph.GraphQueryRequestH\000" +
+      "\022/\n\016plugin_request\030\r \001(\0132\025.lgraph.Plugin" +
+      "RequestH\000\022\'\n\nha_request\030\016 \001(\0132\021.lgraph.H" +
+      "ARequestH\000\022/\n\016import_request\030\017 \001(\0132\025.lgr" +
+      "aph.ImportRequestH\000\022-\n\rgraph_request\030\021 \001" +
+      "(\0132\024.lgraph.GraphRequestH\000\022)\n\013acl_reques" +
+      "t\030\022 \001(\0132\022.lgraph.AclRequestH\000\022/\n\016config_" +
+      "request\030\023 \001(\0132\025.lgraph.ConfigRequestH\000\0221" +
+      "\n\017restore_request\030\024 \001(\0132\026.lgraph.Restore" +
+      "RequestH\000\022/\n\016schema_request\030\025 \001(\0132\025.lgra" +
+      "ph.SchemaRequestH\000B\005\n\003Req\"\366\005\n\016LGraphResp" +
+      "onse\0224\n\nerror_code\030\001 \002(\0162 .lgraph.LGraph" +
+      "Response.ErrorCode\022\020\n\010redirect\030\002 \001(\t\022\r\n\005" +
+      "error\030\003 \001(\t\022\026\n\016server_version\030\004 \001(\003\0226\n\022g" +
+      "raph_api_response\030\013 \001(\0132\030.lgraph.GraphAp" +
+      "iResponseH\000\022:\n\024graph_query_response\030\014 \001(" +
+      "\0132\032.lgraph.GraphQueryResponseH\000\0221\n\017plugi" +
+      "n_response\030\r \001(\0132\026.lgraph.PluginResponse" +
+      "H\000\022)\n\013ha_response\030\016 \001(\0132\022.lgraph.HARespo" +
+      "nseH\000\0221\n\017import_response\030\017 \001(\0132\026.lgraph." +
+      "ImportResponseH\000\022/\n\016graph_response\030\021 \001(\013" +
+      "2\025.lgraph.GraphResponseH\000\022+\n\014acl_respons" +
+      "e\030\022 \001(\0132\023.lgraph.AclResponseH\000\0221\n\017config" +
+      "_response\030\023 \001(\0132\026.lgraph.ConfigResponseH" +
+      "\000\0223\n\020restore_response\030\024 \001(\0132\027.lgraph.Res" +
+      "toreResponseH\000\0221\n\017schema_response\030\025 \001(\0132" +
+      "\026.lgraph.SchemaResponseH\000\"o\n\tErrorCode\022\013" +
+      "\n\007SUCCESS\020\001\022\017\n\013BAD_REQUEST\020\002\022\016\n\nAUTH_ERR" +
+      "OR\020\003\022\n\n\006KILLED\020\004\022\014\n\010REDIRECT\020\005\022\n\n\006FAILED" +
+      "\020\006\022\016\n\tEXCEPTION\020\377\001B\006\n\004Resp\"Q\n\016BackupLogE" +
+      "ntry\022\r\n\005index\030\001 \002(\003\022\014\n\004time\030\002 \002(\003\022\"\n\003req" +
+      "\030\003 \002(\0132\025.lgraph.LGraphRequest\"6\n\016Restore" +
+      "Request\022$\n\004logs\030\001 \003(\0132\026.lgraph.BackupLog" +
+      "Entry\"+\n\017RestoreResponse\022\030\n\020last_success" +
+      "_idx\030\001 \002(\003\"\261\001\n\nLogMessage\022\r\n\005index\030\001 \002(\003" +
+      "\022\014\n\004time\030\002 \002(\003\022\021\n\tbegin_end\030\003 \002(\010\022\014\n\004use" +
+      "r\030\004 \001(\t\022\r\n\005graph\030\005 \001(\t\022 \n\004type\030\006 \001(\0162\022.l" +
+      "graph.LogApiType\022\022\n\nread_write\030\007 \001(\010\022\017\n\007" +
+      "success\030\010 \001(\010\022\017\n\007content\030\t \001(\t\"\r\n\013HttpRe" +
+      "quest\"\016\n\014HttpResponse*\223\001\n\016ProtoFieldType" +
+      "\022\007\n\003NUL\020\000\022\010\n\004BOOL\020\001\022\010\n\004INT8\020\002\022\t\n\005INT16\020\003" +
+      "\022\t\n\005INT32\020\004\022\t\n\005INT64\020\005\022\t\n\005FLOAT\020\006\022\n\n\006DOU" +
+      "BLE\020\007\022\010\n\004DATE\020\010\022\014\n\010DATETIME\020\t\022\n\n\006STRING\020" +
+      "\n\022\010\n\004BLOB\020\013*E\n\020ProtoAccessLevel\022\010\n\004NONE\020" +
+      "\000\022\r\n\tREAD_ONLY\020\001\022\016\n\nREAD_WRITE\020\002\022\010\n\004FULL" +
+      "\020\003**\n\023ProtoGraphQueryType\022\n\n\006CYPHER\020\000\022\007\n" +
+      "\003GQL\020\001*z\n\tNodeState\022\021\n\rUNINITIALIZED\020\001\022\024" +
+      "\n\020LOADING_SNAPSHOT\020\002\022\021\n\rREPLAYING_LOG\020\003\022" +
+      "\021\n\rJOINED_FOLLOW\020\004\022\021\n\rJOINED_MASTER\020\005\022\013\n" +
+      "\007OFFLINE\020\006*J\n\nLogApiType\022\r\n\tSingleApi\020\000\022" +
+      "\014\n\010Security\020\001\022\n\n\006Plugin\020\002\022\n\n\006Cypher\020\003\022\007\n" +
+      "\003Gql\020\0042R\n\020LGraphRPCService\022>\n\rHandleRequ" +
+      "est\022\025.lgraph.LGraphRequest\032\026.lgraph.LGra" +
+      "phResponse2G\n\021LGraphHttpService\0222\n\005Query" +
+      "\022\023.lgraph.HttpRequest\032\024.lgraph.HttpRespo" +
+      "nseB\003\200\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -108115,7 +108204,7 @@ public final class Lgraph {
     internal_static_lgraph_GraphQueryRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lgraph_GraphQueryRequest_descriptor,
-        new java.lang.String[] { "Type", "Query", "ParamNames", "ParamValues", "ResultInJsonFormat", "Graph", "Timeout", });
+        new java.lang.String[] { "Type", "Query", "ParamNames", "ParamValues", "ResultInJsonFormat", "Graph", "Timeout", "PerNodeLimit", });
     internal_static_lgraph_GraphQueryResult_descriptor =
       getDescriptor().getMessageTypes().get(84);
     internal_static_lgraph_GraphQueryResult_fieldAccessorTable = new

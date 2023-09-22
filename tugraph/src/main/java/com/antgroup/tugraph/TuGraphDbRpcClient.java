@@ -62,6 +62,9 @@ public class TuGraphDbRpcClient {
     private String handleCypherRequest(String query, String graph, double timeout, long perNodeLimit) {
         Lgraph.GraphQueryRequest.Builder builder = Lgraph.GraphQueryRequest.newBuilder();
         builder.setType(Lgraph.ProtoGraphQueryType.CYPHER).setQuery(query).setResultInJsonFormat(true).setGraph(graph).setTimeout(timeout);
+        if (perNodeLimit >= 0) {
+            builder.setPerNodeLimit(perNodeLimit);
+        }
         Lgraph.GraphQueryRequest cypherRequest = builder.build();
         Lgraph.LGraphRequest request =
                 Lgraph.LGraphRequest.newBuilder().setGraphQueryRequest(cypherRequest).setToken(this.token)
